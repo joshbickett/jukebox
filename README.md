@@ -1,4 +1,4 @@
-**About Fork:** This is a fork of Jukebox to to be made compatible with the app - makesong.ai.
+**About Fork:** This is a fork of Jukebox to be made compatible with an app available at makesong.ai.
 
 **OpenAIStatus:** Archive (code is provided as-is, no updates expected)
 
