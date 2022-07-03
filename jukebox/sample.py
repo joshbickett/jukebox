@@ -191,31 +191,10 @@ def save_samples(model, device, hps, sample_hps):
     # For the 1b_lyrics top level, labeller will look up artist and genres in v3 set (after lowercasing).
     metas = [dict(artist = "Alan Jackson",
                   genre = "Country",
-                  lyrics = poems['ozymandias'],
-                  total_length=total_length,
-                  offset=offset,
-                  ),
-             dict(artist="Joe Bonamassa",
-                  genre="Blues Rock",
-                  lyrics=gpt_2_lyrics['hottub'],
-                  total_length=total_length,
-                  offset=offset,
-                  ),
-             dict(artist="Frank Sinatra",
-                  genre="Classic Pop",
-                  lyrics=gpt_2_lyrics['alone'],
-                  total_length=total_length,
-                  offset=offset,
-                  ),
-             dict(artist="Ella Fitzgerald",
-                  genre="Jazz",
-                  lyrics=gpt_2_lyrics['count'],
-                  total_length=total_length,
-                  offset=offset,
-                  ),
-             dict(artist="Céline Dion",
-                  genre="Pop",
-                  lyrics=gpt_2_lyrics['darkness'],
+                  lyrics = """I like to run 
+                  The sun feels great
+                  I like to run
+                  The sun feels great""",
                   total_length=total_length,
                   offset=offset,
                   ),
@@ -232,7 +211,7 @@ def save_samples(model, device, hps, sample_hps):
     lower_level_max_batch_size = 16
     if model == '1b_lyrics':
         chunk_size = 32
-        max_batch_size = 16
+        max_batch_size = 10
     else:
         chunk_size = 16
         max_batch_size = 3
