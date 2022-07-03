@@ -197,7 +197,7 @@ def save_samples(model, device, hps, sample_hps):
                   I enjoyed the sun""",
                   total_length=total_length,
                   offset=offset,
-                  )
+                  ),
              ]
     while len(metas) < hps.n_samples:
         metas.extend(metas)
