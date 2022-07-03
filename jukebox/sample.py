@@ -189,12 +189,9 @@ def save_samples(model, device, hps, sample_hps):
     # We used different label sets in our models, but you can write the human friendly names here and we'll map them under the hood for each model.
     # For the 5b/5b_lyrics model and the upsamplers, labeller will look up artist and genres in v2 set. (after lowercasing, removing non-alphanumerics and collapsing whitespaces to _).
     # For the 1b_lyrics top level, labeller will look up artist and genres in v3 set (after lowercasing).
-    metas = [dict(artist = "Alan Jackson",
-                  genre = "Country",
-                  lyrics = """I went for a run,
-                  I enjoyed the sun,
-                  I went for a run, 
-                  I enjoyed the sun""",
+    metas = [dict(artist="Joe Bonamassa",
+                  genre="Blues Rock",
+                  lyrics=gpt_2_lyrics['hottub'],
                   total_length=total_length,
                   offset=offset,
                   ),
