@@ -246,6 +246,12 @@ def save_samples(model, device, hps, sample_hps):
 
 
 def run(model, mode='ancestral', codes_file=None, audio_file=None, prompt_length_in_seconds=None, port=29500, **kwargs):
+    print("makesong.ai: run jukebox")
+    print("makesong.ai model: ", model)
+    print("makesong.ai mode: ", mode)
+    print("makesong.ai prompt_length_in_seconds: ", prompt_length_in_seconds)
+    for k in kwargs: 
+        print("makesong.ai k: ", k)
     from jukebox.utils.dist_utils import setup_dist_from_mpi
     rank, local_rank, device = setup_dist_from_mpi(port=port)
     hps = Hyperparams(**kwargs)
@@ -253,6 +259,7 @@ def run(model, mode='ancestral', codes_file=None, audio_file=None, prompt_length
 
     with t.no_grad():
         save_samples(model, device, hps, sample_hps)
+
 
 if __name__ == '__main__':
     fire.Fire(run)
