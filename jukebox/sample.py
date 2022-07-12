@@ -175,7 +175,8 @@ def load_codes(codes_file, duration, priors, hps):
     return zs
 
 # Generate and save samples, alignment, and webpage for visualization.
-def save_samples(model, device, hps, sample_hps):
+def save_samples(model, device, hps, sample_hps, song_info):
+    print("makesong.ai song_info:", song_info)
     print(hps)
     from jukebox.lyricdict import poems, gpt_2_lyrics
     vqvae, priors = make_model(model, device, hps)
@@ -189,16 +190,41 @@ def save_samples(model, device, hps, sample_hps):
     # We used different label sets in our models, but you can write the human friendly names here and we'll map them under the hood for each model.
     # For the 5b/5b_lyrics model and the upsamplers, labeller will look up artist and genres in v2 set. (after lowercasing, removing non-alphanumerics and collapsing whitespaces to _).
     # For the 1b_lyrics top level, labeller will look up artist and genres in v3 set (after lowercasing).
-    metas = [dict(artist = "Alan Jackson",
-                  genre = "Country",
-                  lyrics = """I like to run 
-                  The sun feels great
-                  I like to run
-                  The sun feels great""",
-                  total_length=total_length,
-                  offset=offset,
-                  ),
-             ]
+    if song_info: 
+        print("makesong.ai setting metas")
+        metas = [song_info]
+    else: 
+        metas = [dict(artist = "Alan Jackson",
+                    genre = "Country",
+                    lyrics = poems['ozymandias'],
+                    total_length=total_length,
+                    offset=offset,
+                    ),
+                dict(artist="Joe Bonamassa",
+                    genre="Blues Rock",
+                    lyrics=gpt_2_lyrics['hottub'],
+                    total_length=total_length,
+                    offset=offset,
+                    ),
+                dict(artist="Frank Sinatra",
+                    genre="Classic Pop",
+                    lyrics=gpt_2_lyrics['alone'],
+                    total_length=total_length,
+                    offset=offset,
+                    ),
+                dict(artist="Ella Fitzgerald",
+                    genre="Jazz",
+                    lyrics=gpt_2_lyrics['count'],
+                    total_length=total_length,
+                    offset=offset,
+                    ),
+                dict(artist="Céline Dion",
+                    genre="Pop",
+                    lyrics=gpt_2_lyrics['darkness'],
+                    total_length=total_length,
+                    offset=offset,
+                    ),
+                ]
     while len(metas) < hps.n_samples:
         metas.extend(metas)
     metas = metas[:hps.n_samples]
@@ -245,7 +271,7 @@ def save_samples(model, device, hps, sample_hps):
         raise ValueError(f'Unknown sample mode {sample_hps.mode}.')
 
 
-def run(model, mode='ancestral', codes_file=None, audio_file=None, prompt_length_in_seconds=None, port=29500, **kwargs):
+def run(model, mode='ancestral', codes_file=None, audio_file=None, prompt_length_in_seconds=None, port=29500, song_info=None, **kwargs):
     print("makesong.ai: run jukebox")
     print("makesong.ai model: ", model)
     print("makesong.ai mode: ", mode)
@@ -258,7 +284,7 @@ def run(model, mode='ancestral', codes_file=None, audio_file=None, prompt_length
     sample_hps = Hyperparams(dict(mode=mode, codes_file=codes_file, audio_file=audio_file, prompt_length_in_seconds=prompt_length_in_seconds))
 
     with t.no_grad():
-        save_samples(model, device, hps, sample_hps)
+        save_samples(model, device, hps, sample_hps, song_info)
 
 
 if __name__ == '__main__':
