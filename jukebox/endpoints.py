@@ -3,6 +3,7 @@ from flask import jsonify
 from flask_cors import CORS
 from flask import request
 import psycopg2, json
+from sample import run
 
 app = Flask(__name__)
 CORS(app)
@@ -31,4 +32,7 @@ def save_email():
   except Exception as e: 
     return { "results": f"failed with error: {e}" }
 
+@app.route("/make", methods=['POST', 'GET'])
+def make():
+    run(model='1b_lyrics', name='sample_1b', levels=3, sample_length_in_seconds=20, total_sample_length_in_seconds=180, sr=44100, n_samples=3, hop_fraction=(0.5,0.5,0.125))
 

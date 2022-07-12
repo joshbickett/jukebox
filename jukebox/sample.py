@@ -192,7 +192,12 @@ def save_samples(model, device, hps, sample_hps, song_info):
     # For the 1b_lyrics top level, labeller will look up artist and genres in v3 set (after lowercasing).
     if song_info: 
         print("makesong.ai setting metas")
-        metas = [song_info]
+        metas = [dict(artist = song_info["artist"],
+                    genre = song_info["genre"],
+                    lyrics = song_info["lyrics"],
+                    total_length=total_length,
+                    offset=offset,
+                    )]
     else: 
         metas = [dict(artist = "Alan Jackson",
                     genre = "Country",
