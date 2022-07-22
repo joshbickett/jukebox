@@ -35,8 +35,12 @@ def save_email():
 @app.route("/make", methods=['POST', 'GET'])
 def make():
   try: 
-    print("making song")
-    info = { "artist": "The Beatles", "genre": "Rock", "lyrics": "Once upon a time I found a dime, it was quite find for a kid that's nine"}
+    print("making song: ", request.form)
+    lyrics = request.form['lyrics']
+    lyrics = lyrics.replace("\r", ",")
+    lyrics = lyrics.replace("\n", " ")
+    print("lyrics,", lyrics)
+    info = { "artist": "The Beatles", "genre": "Rock", "lyrics": lyrics}
     run(model='1b_lyrics', name='sample_1b', levels=3, sample_length_in_seconds=20, total_sample_length_in_seconds=180, sr=44100, n_samples=3, hop_fraction=(0.5,0.5,0.125), song_info=info)
     return jsonify({"success": True})
   except Exception as e:
