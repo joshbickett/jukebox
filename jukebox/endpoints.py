@@ -32,15 +32,22 @@ def save_email():
   except Exception as e: 
     return { "results": f"failed with error: {e}" }
 
+log_make = True
 @app.route("/make", methods=['POST', 'GET'])
 def make():
   try: 
-    print("making song: ", request.form)
+    print("/make")
+    print("Starting to make the song")
     lyrics = request.form['lyrics']
     lyrics = lyrics.replace("\r", ",")
     lyrics = lyrics.replace("\n", " ")
-    print("lyrics,", lyrics)
-    info = { "artist": "The Beatles", "genre": "Rock", "lyrics": lyrics}
+    artist = request.form['artist']
+    genre = request.form['genre']
+    print("artist=>,", artist)
+    print("genre=>,", genre)
+    print("lyrics=>,", lyrics)
+    # info = { "artist": "The Beatles", "genre": "Rock", "lyrics": lyrics}
+    info = { "artist": artist, "genre": genre, "lyrics": lyrics}
     run(model='1b_lyrics', name='sample_1b', levels=3, sample_length_in_seconds=20, total_sample_length_in_seconds=180, sr=44100, n_samples=3, hop_fraction=(0.5,0.5,0.125), song_info=info)
     return jsonify({"success": True})
   except Exception as e:
