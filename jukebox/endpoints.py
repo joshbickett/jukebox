@@ -1,12 +1,15 @@
 from flask import Flask
 from flask import jsonify
-from flask_cors import CORS
+local = False
 from flask import request
 import psycopg2, json
-from sample import run
+if not local: 
+  from flask_cors import CORS
+  from sample import run
 
 app = Flask(__name__)
-CORS(app)
+if not local: 
+  CORS(app)
 
 # Connect to your postgres DB
 conn = psycopg2.connect("dbname=makesong user=postgres")
@@ -26,8 +29,8 @@ def save_email():
   print("trying to save", email)
   
   try: 
-    cur.execute("INSERT INTO waitlist (email, created_at) VALUES ('{0}', now());".format(email))
-    conn.commit()
+    # cur.execute("INSERT INTO waitlist (email, created_at) VALUES ('{0}', now());".format(email))
+    # conn.commit()
     return jsonify({"success": True})
   except Exception as e: 
     return { "results": f"failed with error: {e}" }
@@ -48,7 +51,8 @@ def make():
     print("lyrics=>,", lyrics)
     # info = { "artist": "The Beatles", "genre": "Rock", "lyrics": lyrics}
     info = { "artist": artist, "genre": genre, "lyrics": lyrics}
-    run(model='1b_lyrics', name='sample_1b', levels=3, sample_length_in_seconds=20, total_sample_length_in_seconds=180, sr=44100, n_samples=3, hop_fraction=(0.5,0.5,0.125), song_info=info)
+    if not local: 
+      run(model='1b_lyrics', name='sample_1b', levels=3, sample_length_in_seconds=20, total_sample_length_in_seconds=180, sr=44100, n_samples=3, hop_fraction=(0.5,0.5,0.125), song_info=info)
     return jsonify({"success": True})
   except Exception as e:
     return { "results": f"failed with error: {e}" }
