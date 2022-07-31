@@ -52,7 +52,7 @@ def make():
     # info = { "artist": "The Beatles", "genre": "Rock", "lyrics": lyrics}
     info = { "artist": artist, "genre": genre, "lyrics": lyrics}
     if not local: 
-      run(model='1b_lyrics', name='sample_1b', levels=3, sample_length_in_seconds=20, total_sample_length_in_seconds=180, sr=44100, n_samples=3, hop_fraction=(0.5,0.5,0.125), song_info=info)
+      run(model='1b_lyrics', name='sample_1b', levels=3, sample_length_in_seconds=25, total_sample_length_in_seconds=180, sr=44100, n_samples=3, hop_fraction=(0.5,0.5,0.125), song_info=info)
     return jsonify({"success": True})
   except Exception as e:
     return { "results": f"failed with error: {e}" }
